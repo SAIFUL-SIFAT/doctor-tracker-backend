@@ -1,7 +1,8 @@
 import mongoose, { Schema, Document } from 'mongoose';
 import { CONDITIONS, Condition, GENDERS, Gender, PATIENT_STATUSES, PatientStatus } from '../../config/constants.js';
 
-export interface IPatient extends Document {
+export interface IPatient {
+  _id?: mongoose.Types.ObjectId;
   doctorId: mongoose.Types.ObjectId;
   name: string;
   nameLower: string;
@@ -15,6 +16,8 @@ export interface IPatient extends Document {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export type PatientDocument = mongoose.HydratedDocument<IPatient>;
 
 const patientSchema = new Schema<IPatient>(
   {

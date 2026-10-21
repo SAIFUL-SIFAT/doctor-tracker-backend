@@ -1,7 +1,8 @@
 import mongoose, { Schema, Document } from 'mongoose';
 import { SPECIALIZATIONS, Specialization } from '../../config/constants.js';
 
-export interface IDoctor extends Document {
+export interface IDoctor {
+  _id?: mongoose.Types.ObjectId;
   name: string;
   nameLower: string;
   specialization: Specialization;
@@ -12,6 +13,8 @@ export interface IDoctor extends Document {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export type DoctorDocument = mongoose.HydratedDocument<IDoctor>;
 
 const doctorSchema = new Schema<IDoctor>(
   {
