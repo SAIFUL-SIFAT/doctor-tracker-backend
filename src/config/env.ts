@@ -11,7 +11,10 @@ const envSchema = z.object({
   ACCESS_TOKEN_TTL: z.string().default('15m'),
   REFRESH_TOKEN_TTL_DAYS: z.coerce.number().default(7),
   CLIENT_ORIGIN: z.string().default('http://localhost:3000'),
-  COOKIE_SECURE: z.coerce.boolean().default(false),
+  COOKIE_SECURE: z
+    .union([z.boolean(), z.string()])
+    .transform((val) => val === true || val === 'true')
+    .default(false),
   APP_TIMEZONE: z.string().default('Asia/Dhaka'),
   SEED_ADMIN_EMAIL: z.string().email().default('admin@example.com'),
   SEED_ADMIN_PASSWORD: z.string().min(8).default('ChangeMe123!'),
