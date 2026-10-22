@@ -51,7 +51,7 @@ function getRandomDateInLast180Days(): Date {
 
 async function seed() {
   await connectDB();
-  logger.info('🌱 Starting database seed...');
+  logger.info('Starting database seed...');
 
   const shouldReset = process.argv.includes('--reset') || true;
   if (shouldReset) {
@@ -109,8 +109,8 @@ async function seed() {
       Math.random() < 0.25
         ? 'General Medicine'
         : Math.random() < 0.2
-        ? 'Pediatrics'
-        : faker.helpers.arrayElement(SPECIALIZATIONS);
+          ? 'Pediatrics'
+          : faker.helpers.arrayElement(SPECIALIZATIONS);
 
     const hospital = faker.helpers.arrayElement(HOSPITALS);
     const phone = faker.phone.number({ style: 'national' }).replace(/\s+/g, '');
@@ -131,7 +131,7 @@ async function seed() {
 
   // Insert doctors
   await Doctor.insertMany(doctorsData);
-  logger.info(`✅ Inserted ${doctorsData.length} doctors.`);
+  logger.info(`Inserted ${doctorsData.length} doctors.`);
 
   // 3. Seed 10,000 Patients with Skewed Doctor Distribution
   logger.info(`Generating ${SEED_PATIENTS_COUNT} patients with realistic workload distribution...`);
@@ -213,7 +213,7 @@ async function seed() {
     Patient.syncIndexes(),
   ]);
 
-  logger.info('🎉 Seed completed successfully!');
+  logger.info(' Seed completed successfully!');
   logger.info(`Summary:`);
   logger.info(`- Admin: ${env.SEED_ADMIN_EMAIL} / ${env.SEED_ADMIN_PASSWORD}`);
   logger.info(`- Doctors: ${doctorsData.length}`);
