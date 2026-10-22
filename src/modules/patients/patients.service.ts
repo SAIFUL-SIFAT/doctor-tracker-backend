@@ -5,6 +5,7 @@ import { escapeRegex } from '../../utils/escapeRegex.js';
 import { parsePagination, buildPaginationMeta, PaginationMeta } from '../../utils/pagination.js';
 import { ApiError } from '../../utils/ApiError.js';
 import { UpdatePatientInput } from './patients.schema.js';
+import { invalidateDashboardCache } from '../dashboard/dashboard.service.js';
 
 export class PatientsService {
   static async listPatients(query: any): Promise<{ patients: any[]; meta: PaginationMeta }> {
@@ -131,6 +132,7 @@ export class PatientsService {
             { session }
           );
         });
+        invalidateDashboardCache();
         return updated;
       } finally {
         await session.endSession();
@@ -138,6 +140,7 @@ export class PatientsService {
     } else {
       Object.assign(patient, updateData);
       await patient.save();
+      invalidateDashboardCache();
       return patient;
     }
   }
@@ -165,6 +168,7 @@ export class PatientsService {
       });
     } finally {
       await session.endSession();
+      invalidateDashboardCache();
     }
   }
 }

@@ -5,6 +5,7 @@ import { escapeRegex } from '../../utils/escapeRegex.js';
 import { parsePagination, buildPaginationMeta, PaginationMeta } from '../../utils/pagination.js';
 import { ApiError } from '../../utils/ApiError.js';
 import { CreateDoctorInput } from './doctors.schema.js';
+import { invalidateDashboardCache } from '../dashboard/dashboard.service.js';
 
 export class DoctorsService {
   static async listDoctors(query: any): Promise<{ doctors: IDoctor[]; meta: PaginationMeta }> {
@@ -93,6 +94,7 @@ export class DoctorsService {
 
     const doctor = new Doctor(data);
     await doctor.save();
+    invalidateDashboardCache();
     return doctor;
   }
 
@@ -211,6 +213,7 @@ export class DoctorsService {
       return createdPatient;
     } finally {
       await session.endSession();
+      invalidateDashboardCache();
     }
   }
 
@@ -239,6 +242,7 @@ export class DoctorsService {
       });
     } finally {
       await session.endSession();
+      invalidateDashboardCache();
     }
   }
 }
