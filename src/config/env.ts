@@ -5,7 +5,13 @@ dotenv.config();
 
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
-  PORT: z.coerce.number().default(4000),
+  PORT: z
+    .preprocess((val) => {
+      if (val === undefined || val === '' || val === null) return 4000;
+      const num = Number(val);
+      return Number.isNaN(num) ? 4000 : num;
+    }, z.number())
+    .default(4000),
   MONGODB_URI: z.string().min(1, 'MONGODB_URI is required'),
   JWT_ACCESS_SECRET: z.string().min(32, 'JWT_ACCESS_SECRET must be at least 32 characters'),
   ACCESS_TOKEN_TTL: z.string().default('15m'),
